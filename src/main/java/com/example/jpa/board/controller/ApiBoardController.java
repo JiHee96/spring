@@ -13,12 +13,12 @@ public class ApiBoardController {
 
     private BoardRepository boardRepository;
 
-    public ApiBoardController(BoardRepository boardRepository){
+    public ApiBoardController(BoardRepository boardRepository) {
         this.boardRepository = boardRepository;
     }
 
     @PostMapping("/api/board")
-    public Board addBoard(@RequestBody BoardInput boardInput){
+    public Board addBoard(@RequestBody BoardInput boardInput) {
         Board board = new Board();
         board.setTitle(boardInput.getTitle());
         board.setContents(boardInput.getContents());
@@ -32,17 +32,18 @@ public class ApiBoardController {
     public Board getBoard(@PathVariable Long id) {
         Optional<Board> board = boardRepository.findById(id);
 
-        if (board.isPresent()){
+        if (board.isPresent()) {
             return board.get();
         }
 
         return null;
     }
+
     @PutMapping("/api/board/{id}")
     public Board updateBoard(@PathVariable Long id, @RequestBody BoardInput boardInput) {
         Optional<Board> board = boardRepository.findById(id);
 
-        if (board.isPresent()){
+        if (board.isPresent()) {
             board.get().setTitle(boardInput.getTitle());
             board.get().setContents(boardInput.getContents());
             board.get().setUpdateDate(LocalDateTime.now());
@@ -54,11 +55,13 @@ public class ApiBoardController {
     }
 
     @DeleteMapping("/api/board/{id}")
-    public void deleteBoard(@PathVariable Long id){
+    public Long deleteBoard(@PathVariable Long id) {
         Optional<Board> board = boardRepository.findById(id);
 
-        if(board.isPresent()){
+        if (board.isPresent()) {
             boardRepository.delete(board.get());
+            return board.get().getId();
         }
+        return board.get().getId();
     }
 }

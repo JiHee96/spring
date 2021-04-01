@@ -32,6 +32,4 @@ public class Board {
     @Column
     private LocalDateTime updateDate;
 
-
-
 }
